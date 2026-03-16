@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗳️ Тест: Избори в България</title>
+<meta property="og:title" content="🗳️ Тест: Избори в България"/>
+<meta property="og:description" content="10 въпроса за изборни системи, участие и демокрация. Провери знанията си!"/>
+<meta property="og:type" content="website"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:system-ui,sans-serif;
+  color:#1a1a1a;
+  min-height:100vh;
+  padding:2rem 1rem;
+  background:
+    linear-gradient(
+      to bottom,
+      #FFFFFF      0%,
+      #FFFFFF      33.33%,
+      #00966E      33.33%,
+      #00966E      66.66%,
+      #D62612      66.66%,
+      #D62612      100%
+    );
+  background-attachment:fixed;
+}
+
+/* #00966E = #00966E green at 50% tint over white  */
+/* #D62612 = #D62612 red   at 50% tint over white  */
+
+.header-block{max-width:640px;margin:0 auto 1.5rem auto;display:flex;align-items:center;gap:18px}
+.flag-pole{width:4px;height:100px;background:linear-gradient(180deg,#ddd,#888);border-radius:2px;margin-top:-8px;flex-shrink:0}
+.flag-container{width:150px;height:90px;perspective:400px;flex-shrink:0}
+.flag{width:100%;height:100%;transform-style:preserve-3d;animation:wave 2.4s ease-in-out infinite}
+@keyframes wave{
+  0%  {transform:rotateY(0deg) scaleX(1)}
+  25% {transform:rotateY(14deg) scaleX(0.96)}
+  50% {transform:rotateY(0deg) scaleX(1)}
+  75% {transform:rotateY(-14deg) scaleX(0.96)}
+  100%{transform:rotateY(0deg) scaleX(1)}
+}
+.app-title{font-size:22px;font-weight:700;color:#1a1a1a;line-height:1.3}
+.app-subtitle{font-size:14px;color:#444;margin-top:4px}
+
+#quiz{max-width:640px;margin:auto;background:rgba(255,255,255,0.95);border-radius:14px;border:1px solid rgba(0,0,0,0.08);padding:2rem}
+.progress-bar{height:4px;background:#e0e0d8;border-radius:2px;margin-bottom:1.5rem}
+.progress-fill{height:4px;background:#00966E;border-radius:2px;transition:width 0.4s ease}
+.step-label{font-size:13px;color:#888;margin-bottom:1rem}
+.question{font-size:17px;font-weight:500;line-height:1.5;margin-bottom:1.25rem}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:#fff;border:1px solid #d0d0c8;border-radius:8px;padding:12px 16px;font-size:15px;cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s;font-family:inherit}
+.opt:hover:not(:disabled){background:#f5f5f0;border-color:#aaa}
+.opt.correct{background:#E1F5EE;border-color:#00966E;color:#004a37}
+.opt.wrong{background:#FCEBEB;border-color:#D62612;color:#5c1009}
+.opt.reveal{background:#E1F5EE;border-color:#00966E;color:#004a37}
+.opt:disabled{cursor:default}
+.feedback{margin-top:1rem;padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.6;border-left:3px solid}
+.feedback.correct{background:#E1F5EE;border-color:#00966E;color:#004a37}
+.feedback.wrong{background:#FCEBEB;border-color:#D62612;color:#5c1009}
+.next-btn{margin-top:1.25rem;padding:10px 24px;border:1px solid #d0d0c8;border-radius:8px;background:transparent;font-size:14px;cursor:pointer;font-family:inherit}
+.next-btn:hover{background:#f0f0ec}
+.score-card{text-align:center;padding:1rem 0}
+.score-big{font-size:52px;font-weight:700;color:#00966E;line-height:1}
+.score-sub{font-size:15px;color:#888;margin-top:0.5rem;margin-bottom:1.5rem}
+.score-msg{font-size:15px;line-height:1.6;margin-bottom:1.5rem;padding:1rem;background:#f5f5f0;border-radius:12px}
+.restart-btn{padding:10px 28px;border:1px solid #d0d0c8;border-radius:8px;background:transparent;font-size:14px;cursor:pointer;font-family:inherit}
+.restart-btn:hover{background:#f0f0ec}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-bottom:0.75rem;background:#f5f5f0;color:#888;border:1px solid #e0e0d8}
+</style>
+</head>
+<body>
+
+<div class="header-block">
+  <div class="flag-pole"></div>
+  <div class="flag-container">
+    <svg class="flag" viewBox="0 0 150 90" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0"  width="150" height="30" fill="#FFFFFF" stroke="#ccc" stroke-width="0.5"/>
+      <rect x="0" y="30" width="150" height="30" fill="#00966E"/>
+      <rect x="0" y="60" width="150" height="30" fill="#D62612"/>
+    </svg>
+  </div>
+  <div>
+    <div class="app-title">🗳️ Тест: Избори</div>
+    <div class="app-subtitle">10 въпроса · Провери знанията си</div>
+  </div>
+</div>
+
+<div id="quiz"></div>
+
+<script>
+const questions=[
+  {tag:"Основни понятия",q:"Какво е изборен район?",opts:["Официалният документ с политиката на партията","Географска зона, представлявана от един избран депутат","Общият брой на регистрираните избиратели в страната","Комисия, която наблюдава провеждането на изборите"],ans:1,explain:"Изборният район е очертана географска зона, чиито жители избират свой представител в парламента. В България народните представители се избират по многомандатни избирателни райони."},
+  {tag:"Изборни системи",q:"Каква изборна система се използва в България за парламентарни избори?",opts:["Мажоритарна система (първият взема всичко)","Двутурова система","Пропорционална система с партийни листи","Единичен прехвърляем вот (STV)"],ans:2,explain:"България използва пропорционална система с партийни листи. Партиите получават мандати съобразно дела си от гласовете, а избирателите могат да дадат преференция за конкретен кандидат в листата."},
+  {tag:"Основни понятия",q:"Какво представлява предизборната програма на партия?",opts:["Официалната бюлетина, използвана на изборния ден","Документ, в който партията излага своите политики и обещания","Съдебно решение по изборен спор","Списъкът на кандидатите в даден район"],ans:1,explain:"Предизборната програма (манифест) е публичен документ на партията, в който се описва какво би направила тя, ако спечели изборите. Избирателите могат да сравняват програмите на различните партии преди да гласуват."},
+  {tag:"Участие",q:"Какво измерва 'избирателната активност'?",opts:["Броят на невалидните бюлетини","Скоростта на преброяване след затваряне на изборните секции","Процентът на правоимащите избиратели, които действително са гласували","Разликата в гласовете между първите двама кандидати"],ans:2,explain:"Избирателна активност = (подадени гласове ÷ регистрирани избиратели) × 100. Високата активност обикновено се приема като признак на здрава демокрация; ниската може да означава гражданска апатия или пречки пред гласуването."},
+  {tag:"Основни понятия",q:"Какво е частичен избор (допълнителни избори)?",opts:["Избори, провеждани едновременно с референдум","Специални избори за попълване на освободен мандат","Избори само за местни органи на власт","Втори тур, когато никой кандидат не е спечелил мнозинство"],ans:1,explain:"Частичен или допълнителен избор се провежда, когато даден депутат освободи мандата си — поради смърт, оставка или загуба на правото да заема длъжността. Гласуват само избирателите в засегнатия район."},
+  {tag:"Резултати",q:"Какво е коалиционно правителство?",opts:["Правителство, образувано от партия с абсолютно мнозинство","Правителство, в което една партия заема всички министерства","Съюз от две или повече партии, управляващи заедно след като нито една не е спечелила мнозинство","Временно служебно правителство между избори"],ans:2,explain:"Когато нито една партия не спечели достатъчно мандати за самостоятелно мнозинство, партиите водят преговори за коалиция. Коалиционното споразумение урежда общите политики и разпределението на министерствата — обичайно явление при пропорционални системи."},
+  {tag:"Основни понятия",q:"Какво е референдум?",opts:["Пряко гласуване на гражданите по конкретен политически въпрос или конституционна промяна","Процесът, по който партията избира своя лидер","Социологическо проучване преди изборния ден","Преброителна процедура при много малка разлика в гласовете"],ans:0,explain:"На референдум гражданите гласуват 'да' или 'не' по конкретен въпрос — най-често промяна в конституцията. В България бяха проведени референдуми по въпроси като въвеждане на мажоритарен вот и задължително гласуване."},
+  {tag:"Изборни системи",q:"Какво е изборен праг?",opts:["Минималният брой кандидати, необходим за регистрация на партия","Минималният процент гласове, който партията трябва да получи, за да влезе в парламента","Максималният брой мандати, които една партия може да спечели","Часът, в който се затварят изборните секции"],ans:1,explain:"Изборният праг е минималният процент гласове, необходим за влизане в парламента. В България прагът е 4%. Той цели да предотврати прекалената фрагментация, но може да 'отреже' по-малки партии дори при значителна подкрепа."},
+  {tag:"Участие",q:"Какво е невалидна бюлетина?",opts:["Бюлетина, подадена за губещ кандидат","Бюлетина, която е повредена, неясна или неправилно попълнена и не може да бъде преброена","Бюлетина, подадена след затварянето на изборните секции","Бюлетина, подадена от лице, което не е в избирателния списък"],ans:1,explain:"Бюлетината е невалидна, ако не може да се установи волята на избирателя — например ако не е отбелязан избор или документът е умишлено унищожен. Някои избиратели подават невалидна бюлетина като форма на протест."},
+  {tag:"Резултати",q:"Какво означава 'висяш парламент'?",opts:["Управляващата партия губи мнозинството си и нито партия, нито коалиция може да образува стабилно правителство","Всички мандати са поравно разпределени и веднага се насрочват нови избори","Най-голямата партия автоматично образува малцинствено правителство","Изборният резултат е обявен за недействителен заради нарушения"],ans:0,explain:"'Висяш парламент' означава, че нито една партия — и нито една очевидна коалиция — не разполага с мнозинство от мандатите. Това води до продължителни преговори, какъвто беше случаят в България при многократните избори между 2021 и 2023 г."}
+];
+let current=0,score=0,answered=false;
+function render(){
+  const container=document.getElementById('quiz');
+  if(current>=questions.length){
+    const pct=Math.round((score/questions.length)*100);
+    let msg='';
+    if(pct>=80)msg='Отлично познаване на изборните понятия — обхващате системи, термини и демократично участие.';
+    else if(pct>=50)msg='Добра основа — струва си да прегледате отново изборните системи и резултатите от изборите.';
+    else msg='Препоръчително е да се върнете към основните понятия: видове изборни системи, прагове и коалиции.';
+    container.innerHTML=`<div class="score-card"><div class="score-big">${score}/${questions.length}</div><div class="score-sub">${pct}% верни отговора</div><div class="score-msg">${msg}</div><button class="restart-btn" onclick="restart()">Опитай отново</button></div>`;
+    return;
+  }
+  const q=questions[current];
+  const pct=Math.round((current/questions.length)*100);
+  container.innerHTML=`<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="step-label">Въпрос ${current+1} от ${questions.length}</div><div class="tag">${q.tag}</div><div class="question">${q.q}</div><div class="options" id="opts">${q.opts.map((o,i)=>`<button class="opt" id="opt${i}" onclick="choose(${i})">${o}</button>`).join('')}</div><div id="fb"></div>`;
+  answered=false;
+}
+function choose(i){
+  if(answered)return;
+  answered=true;
+  const q=questions[current];
+  document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const correct=i===q.ans;
+  if(correct)score++;
+  document.getElementById('opt'+i).classList.add(correct?'correct':'wrong');
+  if(!correct)document.getElementById('opt'+q.ans).classList.add('reveal');
+  document.getElementById('fb').innerHTML=`<div class="feedback ${correct?'correct':'wrong'}">${correct?'Правилно. ':'Грешно. '}${q.explain}</div><button class="next-btn" onclick="next()">${current<questions.length-1?'Следващ въпрос →':'Вижте резултата →'}</button>`;
+}
+function next(){current++;render();}
+function restart(){current=0;score=0;answered=false;render();}
+render();
+</script>
+</body>
+</html>
